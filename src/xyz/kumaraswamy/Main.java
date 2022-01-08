@@ -11,13 +11,18 @@ public class Main {
   public static void main(String[] args) throws IOException {
     byte[] texts =
         Files.readAllBytes(
-            new File("C:\\Users\\user\\Documents\\LZW Bytes\\files\\text.txt")
+            new File("C:\\Users\\user\\Documents\\LZW Bytes\\files\\image.png")
                 .toPath()
         );
     Byte[] bytes = new Byte[texts.length];
     Arrays.parallelSetAll(bytes, i -> texts[i]);
 
     byte[] encode = new LZW(bytes).encode();
+
+    Files.write(
+        new File("C:\\Users\\user\\Documents\\LZW Bytes\\files\\encoded.txt")
+            .toPath()
+        , encode);
 
     System.out.println("Saved Bytes: " + (texts.length - encode.length));
     System.out.println("Encoded: " + Arrays.toString(encode));
@@ -33,7 +38,7 @@ public class Main {
     }
     System.out.println("Yay");
     Files.write(
-        new File("C:\\Users\\user\\Documents\\LZW Bytes\\files\\decoded.txt")
+        new File("C:\\Users\\user\\Documents\\LZW Bytes\\files\\decoded.png")
             .toPath()
         , texts);
   }

@@ -89,8 +89,10 @@ public class LZW {
     dict = new HashMap<>();
     Range range = new Range(LZW.range, false);
 
+    loop:
     for (int i = 0; i < bytesI.size(); i++) {
       byte byt = bytesI.get(i);
+      // todo check if iterator has nextElement before accessing it
       range.put(byt);
       if (range.hasAll() && contains(range.array(), bytesI)) {
         ArrayList<Byte> cloned = new ArrayList<>(bytesI);
@@ -110,8 +112,12 @@ public class LZW {
 
           Byte by = dict.get(range.array());
           if (by == null) {
-            by = indexByteI.next();
-            dict.put(range.array(), by);
+            if (indexByteI.hasNext()) {
+              by = indexByteI.next();
+              dict.put(range.array(), by);
+            } else {
+              continue loop;
+            }
           }
           bytes.add(by);
         }
